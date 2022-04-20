@@ -40,8 +40,6 @@ module.exports.create = async (event, context) => {
   }
 }
 
-
-
 module.exports.getAll = async (event, context) => {
 try{
   context.callbackWaitsForEmptyEventLoop = false;
