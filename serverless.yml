@@ -1,0 +1,72 @@
+org: krishna799
+app: serverless-eco
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: serverless-eco # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 512 # set the maximum memory of the Lambdas in Megabytes
+  timeout: 5 # the timeout is 10 seconds (default is 6 seconds)
+  stage: dev # setting the env stage to dev, this will be visible in the routes
+  region: us-east-1 # region where our lambda functions will store.
+
+functions:
+  hello:
+    handler: controllers/productsHandler.hello
+  create:
+    handler: controllers/productsHandler.create # point to exported create function in handler.js
+    memorySize: 128 #optional
+    events:
+      - http:
+          path: notes # path will be domain.name.com/dev/notes
+          method: post
+          cors: true
+  getOne:
+    handler: controllers/productsHandler.getOne
+    events:
+      - http:
+          path: notes/{id} # path will be domain.name.com/dev/notes/1
+          method: get
+          cors: true
+  getAll:
+    handler: controllers/productsHandler.getAll # path will be domain.name.com/dev/notes
+    events:
+      - http:
+          path: notes
+          method: get
+          cors: true
+  update:
+    handler: controllers/productsHandler.update # path will be domain.name.com/dev/notes/1
+    events:
+      - http:
+          path: notes/{id}
+          method: patch
+          cors: true
+  delete:
+    handler: controllers/productsHandler.delete
+    events:
+      - http:
+          path: notes/{id} # path will be domain.name.com/dev/notes/1
+          method: delete
+          cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-warmup
