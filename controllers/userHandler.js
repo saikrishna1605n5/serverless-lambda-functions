@@ -2,8 +2,7 @@
 
 require('dotenv').config({ path: './variables.env' });
 
-const Note = require('../models/notesModel');
-
+const User = require('../models/userModel');
 const connectToDatabase = require('../server');
 
 module.exports.hello = (event, context, callback) => {
@@ -33,8 +32,8 @@ async function getError(info){
 module.exports.create = async (event, context) => {
   try{
     context.callbackWaitsForEmptyEventLoop = true;
-    const note = await Note.create(JSON.parse(event.body));
-      return getData(note);
+    const user = await User.create(JSON.parse(event.body));
+      return getData(user);
 
       }catch(err){
       return getError(err);
@@ -45,8 +44,8 @@ module.exports.getAll = async (event, context) => {
 try{
   context.callbackWaitsForEmptyEventLoop = false;
 
-    const notes = await Note.find();
-      return getData(notes);
+    const users = await User.find();
+      return getData(users);
       
       }catch(err){
         return getError(err);
@@ -57,10 +56,10 @@ try{
 module.exports.update = async (event, context) => {
   try{
     context.callbackWaitsForEmptyEventLoop = true;
-  const note = await Note.findByIdAndUpdate(event.pathParameters.id, JSON.parse(event.body), {
+  const user = await User.findByIdAndUpdate(event.pathParameters.id, JSON.parse(event.body), {
       new: true
     })
-      return getData(note);
+      return getData(user);
 
   }catch(err){
         return getError(err);
@@ -70,7 +69,7 @@ module.exports.update = async (event, context) => {
 module.exports.delete = async (event , context) => {
   try{
     context.callbackWaitsForEmptyEventLoop = true;
-  const note = await  Note.findByIdAndRemove(event.pathParameters.id)
+  const user = await  User.findByIdAndRemove(event.pathParameters.id)
       return {
           statusCode: 200,
           body: JSON.stringify({
@@ -86,12 +85,22 @@ module.exports.delete = async (event , context) => {
 module.exports.getOne = async(event, context) => {
   try {
     context.callbackWaitsForEmptyEventLoop = true;
-   const note =  await Note.findById(event.pathParameters.id);
-      return getData(note);
+   const user =  await User.findById(event.pathParameters.id);
+      return getData(user);
     }catch (err) {
       return getError(err);
   }
 }
+
+module.exports.getUserBasedOnTheName = async(event, context) => {
+    try {
+      context.callbackWaitsForEmptyEventLoop = true;
+     const user =  await User.findOne({name : event.pathParameters.name});
+        return getData(user);
+      }catch (err) {
+        return getError(err);
+    }
+  }
 
 //------------------------this function is working ----------------------
 

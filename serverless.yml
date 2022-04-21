@@ -66,7 +66,65 @@ functions:
           path: notes/{id} # path will be domain.name.com/dev/notes/1
           method: delete
           cors: true
+  UserCreate:
+    handler: controllers/userHandler.create 
+    memorySize: 128 #optional
+    events:
+      - http:
+          path: user 
+          method: post
+          cors: true
+  userGetOne:
+    handler: controllers/userHandler.getOne
+    events:
+      - http:
+          path: user/{id} 
+          method: get
+          cors: true
+  userGetAll:
+    handler: controllers/userHandler.getAll 
+    events:
+      - http:
+          path: user
+          method: get
+          cors: true
+  userUpdate:
+    handler: controllers/userHandler.update 
+    events:
+      - http:
+          path: user/{id}
+          method: patch
+          cors: true
+  userDelete:
+    handler: controllers/userHandler.delete
+    events:
+      - http:
+          path: user/{id} 
+          method: delete
+          cors: true        
+  UserGetUser:
+    handler: controllers/userHandler.getUserBasedOnTheName
+    events:
+      - http:
+          path: user/name/{name}
+          method: get
+          cors: true
+
+  imageUpload:
+    handler: controllers/itemHandler.imageUpload
+    events:
+      - http:
+          path: item/image
+          method: post
+          cors: true
 
 plugins:
   - serverless-offline
   - serverless-plugin-warmup
+  - serverless-apigw-binary
+
+custom:
+  apigwBinary:
+    types:           #list of mime-types
+      - 'image/jpeg'
+      - 'text/html'

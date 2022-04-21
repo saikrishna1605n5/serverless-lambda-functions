@@ -10,11 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1118.0",
     "dotenv": "^16.0.0",
     "mongoose": "^6.3.0",
-    "serverless-offline": "^8.7.0"
+    "serverless-offline": "^8.3.1"
   },
   "devDependencies": {
+    "serverless-apigw-binary": "^0.4.4",
     "serverless-plugin-warmup": "^7.1.0"
   }
 }
